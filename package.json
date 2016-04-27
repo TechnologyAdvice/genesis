@@ -1,0 +1,15 @@
+{
+  "name": "ta-fe-kickstart",
+  "version": "0.0.0",
+  "description": "Standardized application scripts and boilerplate for Front End applications",
+  "main": "index.js",
+  "engines": {
+    "node": ">=5.0.0",
+    "npm": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Zukowski <david@zuko.me> (https://zuko.me)",
+  "license": "MIT"
+}
