@@ -39,7 +39,7 @@ TBD
    * @property {?string} compiler_devtool - the developer tool to be generated
    * with the compiled code.
    */
-  compiler_devtool: process.env.NODE_ENV !== 'production' ? 'source-map' : false,
+  compiler_devtool: process.env.NODE_ENV !== 'production' ? 'source-map' : null,
 
   /**
    * @property {string} compiler_src - the name of the destination directory for
