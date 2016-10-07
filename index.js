@@ -1,5 +1,3 @@
-'use strict';
-
 exports.server = {
   dev: require('./lib/dev-server'),
 }
