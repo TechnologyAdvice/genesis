@@ -69,6 +69,18 @@ module.exports = {
 }
 ```
 
+## Globals
+
+Genesis compiles your app with some global variables.  Their values are determined by how you set  `NODE_ENV` and `DEPLOY_TARGET`. See `/lib/context.js` for more.
+
+```
+__DEV__
+__TEST__
+__STAGING__
+__PROD__
+process.env.NODE_ENV
+```
+
 ## Releasing
 
 On the latest clean `master`:
