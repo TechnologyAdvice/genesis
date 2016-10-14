@@ -8,9 +8,7 @@
     "npm": "^3"
   },
   "bin": {
-    "gen": "./cli.js",
-    "ta-genesis:dev": "./bin/start-dev-server.js",
-    "ta-genesis:compile": "./bin/compile.js"
+    "gen": "./cli.js"
   },
   "scripts": {
     "release:major": "ta-script npm/release.sh major",
