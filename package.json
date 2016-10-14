@@ -13,7 +13,9 @@
     "ta-genesis:compile": "./bin/compile.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release:major": "ta-script npm/release.sh major",
+    "release:minor": "ta-script npm/release.sh minor",
+    "release:patch": "ta-script npm/release.sh patch"
   },
   "author": "TechnologyAdvice <devteam@technologyadvice.com>",
   "license": "MIT",
@@ -72,5 +74,8 @@
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.6.0",
     "yargs": "^6.0.0"
+  },
+  "devDependencies": {
+    "ta-scripts": "^2.4.3"
   }
 }

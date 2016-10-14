@@ -68,3 +68,14 @@ module.exports = {
   compiler_vendors: [],
 }
 ```
+
+## Releasing
+
+On the latest clean `master`:
+
+```sh
+npm run release:major
+npm run release:minor
+npm run release:patch
+```
+
