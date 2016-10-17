@@ -76,5 +76,9 @@
   },
   "devDependencies": {
     "ta-scripts": "^2.4.3"
+  },
+  "peerDependencies": {
+    "react": ">=15",
+    "react-addons-test-utils": ">=15"
   }
 }
