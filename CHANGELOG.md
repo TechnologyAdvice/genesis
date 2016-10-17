@@ -1,5 +1,8 @@
 # Change Log
 
+## [v1.0.3](https://github.com/TechnologyAdvice/genesis/tree/v1.0.3) (2016-10-17)
+[Full Changelog](https://github.com/TechnologyAdvice/genesis/compare/v1.0.2...v1.0.3)
+
 ## [v1.0.2](https://github.com/TechnologyAdvice/genesis/tree/v1.0.2) (2016-10-14)
 [Full Changelog](https://github.com/TechnologyAdvice/genesis/compare/v1.0.1...v1.0.2)
 
