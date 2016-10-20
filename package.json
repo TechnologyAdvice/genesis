@@ -77,7 +77,7 @@
   },
   "devDependencies": {
     "greenkeeper-postpublish": "^1.0.1",
-    "ta-scripts": "^2.4.3"
+    "ta-scripts": "^2.5.0"
   },
   "peerDependencies": {
     "react": ">=15",
