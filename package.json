@@ -15,7 +15,8 @@
     "gen": "./cli.js"
   },
   "scripts": {
-    "test": "echo \"There are no tests\"",
+    "test": "mocha",
+    "test:watch": "npm run test -- -w",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "release:major": "ta-script npm/release.sh major",

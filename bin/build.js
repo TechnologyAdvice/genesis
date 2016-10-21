@@ -8,6 +8,9 @@ const webpack = require('webpack')
  * @return {Promise}
  */
 module.exports = function build(webpackConfig) {
+  // TODO Basic webpack config validation
+  // https://www.npmjs.com/package/webpack-validator
+
   return new Promise((resolve, reject) => {
     const compiler = webpack(webpackConfig)
 
