@@ -1,6 +1,6 @@
 const debug = require('debug')('genesis:command:validate')
 const validators = require('../lib/validators')
-const { log } = require('../lib/utils')
+const log = require('../lib/log')
 
 module.exports = {
   command: 'validate',

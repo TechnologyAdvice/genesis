@@ -1,4 +1,6 @@
 # Genesis
+[![Circle CI](https://img.shields.io/circleci/project/TechnologyAdvice/genesis/master.svg?style=flat-square)](https://circleci.com/gh/TechnologyAdvice/genesis/tree/master)
+[![Codecov](https://img.shields.io/codecov/c/github/TechnologyAdvice/genesis/master.svg?style=flat-square)](https://codecov.io/gh/TechnologyAdvice/genesis)
 
 ## Table of Contents
 1. [Requirements](#requirements)
@@ -71,7 +73,7 @@ module.exports = {
 
 ## Globals
 
-Genesis compiles your app with some global variables.  Their values are determined by how you set  `NODE_ENV` and `DEPLOY_TARGET`. See `/lib/context.js` for more.
+Genesis compiles your app with some global variables.  Their values are determined by how you set  `NODE_ENV` and `APP_ENV`. See `/lib/context.js` for more.
 
 ```
 __DEV__

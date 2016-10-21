@@ -1,7 +1,8 @@
 const debug = require('debug')('genesis:command:lint')
 
 const validators = require('../lib/validators')
-const { log, spawnPromise } = require('../lib/utils')
+const { spawnPromise } = require('../lib/utils')
+const log = require('../lib/log')
 
 module.exports = {
   command: 'lint',
@@ -18,6 +19,16 @@ module.exports = {
 
   handler(argv) {
     debug('Executing')
+    if (!process.env.NODE_ENV) {
+      log.info('Setting default NODE_ENV=production')
+      process.env.NODE_ENV = 'production'
+    }
+
+    if (!process.env.APP_ENV) {
+      log.info('Setting default APP_ENV=production')
+      process.env.APP_ENV = 'production'
+    }
+
     validators.validateProject()
 
     let command = 'node_modules/.bin/eslint .'

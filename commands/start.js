@@ -1,5 +1,5 @@
 const debug = require('debug')('genesis:command:start')
-const { log } = require('../lib/utils')
+const log = require('../lib/log')
 
 module.exports = {
   command: 'start',
@@ -18,6 +18,16 @@ module.exports = {
 
   handler(argv) {
     debug('Executing')
+    if (!process.env.NODE_ENV) {
+      log.info('Setting default NODE_ENV=development')
+      process.env.NODE_ENV = 'development'
+    }
+
+    if (!process.env.APP_ENV) {
+      log.info('Setting default APP_ENV=development')
+      process.env.APP_ENV = 'development'
+    }
+
     const { verbose } = argv
     const devServer = require('../lib/dev-server')
     const validators = require('../lib/validators')

@@ -2,7 +2,7 @@ const debug = require('debug')('genesis:command:test')
 const path = require('path')
 
 const test = require('../bin/test')
-const { log } = require('../lib/utils')
+const log = require('../lib/log')
 const validators = require('../lib/validators')
 
 module.exports = {
@@ -20,6 +20,16 @@ module.exports = {
 
   handler(argv) {
     debug('Executing')
+    if (!process.env.NODE_ENV) {
+      log.info('Setting default NODE_ENV=test')
+      process.env.NODE_ENV = 'test'
+    }
+
+    if (!process.env.APP_ENV) {
+      log.info('Setting default APP_ENV=test')
+      process.env.APP_ENV = 'test'
+    }
+
     const { watch } = argv
     validators.validateProject()
 

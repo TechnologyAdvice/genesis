@@ -3,8 +3,7 @@ const karma = require('karma')
 module.exports = function test(options) {
   return new Promise((resolve, reject) => {
     if (!options.configFile) {
-      reject('You must define a configFile option.')
-      return
+      throw new Error('You must define a configFile option.')
     }
 
     const server = new karma.Server(options, (exitCode) => {

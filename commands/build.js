@@ -1,6 +1,6 @@
 const fs = require('fs-promise')
 const debug = require('debug')('genesis:command:build')
-const { log } = require('../lib/utils')
+const log = require('../lib/log')
 
 module.exports = {
   command: 'build',
@@ -19,9 +19,20 @@ module.exports = {
 
   handler(argv) {
     debug('Executing')
+    if (!process.env.NODE_ENV) {
+      log.info('Setting default NODE_ENV=production')
+      process.env.NODE_ENV = 'production'
+    }
+
+    if (!process.env.APP_ENV) {
+      log.info('Setting default APP_ENV=production')
+      process.env.APP_ENV = 'production'
+    }
+
     const { verbose } = argv
-    const { config } = require('../lib/context').get()
+    const config = require('../lib/config')
     const validators = require('../lib/validators')
+
     validators.validateProject()
 
     log(`Removing ${config.compiler_dist}`)

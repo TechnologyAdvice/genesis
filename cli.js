@@ -6,8 +6,8 @@ const _ = require('lodash/fp')
 const v8flags = require('v8flags')
 const yargs = require('yargs')
 
-const context = require('./lib/context')
-const { log } = require('./lib/utils')
+const cliEnv = require('./lib/cliEnv')
+const log = require('./lib/log')
 
 // ==================================================
 // Validate Node
@@ -130,7 +130,7 @@ const invoke = function invoke(env) {
     log.info('Working directory changed to', env.cwd)
   }
 
-  context.set({ env })
+  cliEnv.set(env)
 
   // Now that the config is loaded, re-add all the commands
   // This time, include the handlers so yargs will execute them
