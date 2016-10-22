@@ -7,9 +7,12 @@ machine:
   node:
     version: 6
 
-test:
+dependencies:
   pre:
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+test:
+  pre:
     - npm run lint
   post:
     - bash <(curl -s https://codecov.io/bash)

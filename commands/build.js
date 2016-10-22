@@ -1,73 +1,84 @@
-const fs = require('fs-promise')
-const debug = require('debug')('genesis:command:build')
-const log = require('../lib/log')
-
 module.exports = {
   command: 'build',
-  describe: 'Build the app',
+  describe: 'build the app',
 
   builder(yargs) {
+    const configSchema = require('../lib/config-schema')
+
     return yargs
-      .option('verbose', {
+      .option('v', {
+        alias: 'verbose',
         default: false,
         describe: 'Output more information',
       })
-      .alias({
-        v: 'verbose',
+      .group(['s'], 'Compiler:')
+      .option('s', {
+        alias: 'sourcemaps',
+        default: configSchema.compiler_sourcemaps.default,
+        describe: configSchema.compiler_sourcemaps.describe,
+        type: configSchema.compiler_sourcemaps.type,
       })
   },
 
-  handler(argv) {
-    debug('Executing')
-    if (!process.env.NODE_ENV) {
-      log.info('Setting default NODE_ENV=production')
-      process.env.NODE_ENV = 'production'
-    }
-
-    if (!process.env.APP_ENV) {
-      log.info('Setting default APP_ENV=production')
-      process.env.APP_ENV = 'production'
-    }
-
-    const { verbose } = argv
-    const config = require('../lib/config')
+  execute(argv) {
+    const build = require('../bin/build')
+    const chalk = require('chalk')
+    const getConfig = require('../lib/get-config')
+    const getWebpackConfig = require('../lib/get-webpack-config')
+    const fs = require('fs-promise')
+    const log = require('../lib/log')
     const validators = require('../lib/validators')
 
-    validators.validateProject()
+    return Promise.resolve()
+      .then(validators.projectStructure)
+      .then(() => {
+        const config = getConfig({ defaultEnv: 'production' })
+        const { __PROD__, __STAG__ } = config.compiler_globals
 
-    log(`Removing ${config.compiler_dist}`)
-    fs.removeSync(config.compiler_dist)
+        const webpackConfig = getWebpackConfig(config, {
+          hmr: false,
+          splitBundle: true,
+          minify: __PROD__ || __STAG__,
+        })
 
-    log('Starting webpack...')
-    const build = require('../bin/build')
-    const webpackConfig = require('../lib/webpack-config')
+        fs.removeSync(config.compiler_dist)
 
-    build(webpackConfig)
-      .then(stats => {
-        log.success('Webpack finished')
-        if (verbose) {
-          log(stats.toString(config.compiler_stats))
+        if (argv.verbose) {
+          log('Building...')
         } else {
-          log('Run with --verbose to see more output')
-        }
-      }, ({ err, stats }) => {
-        // fatal error
-        if (err) throw err
-
-        // soft errors
-        if (stats.hasErrors()) {
-          log.error(stats.toString(config.compiler_stats))
-          process.exit(1)
+          log.info('Run with --verbose to see more output')
+          log.spin('Building')
         }
 
-        // warnings
-        if (stats.hasWarnings()) {
-          log.error(stats.toString(config.compiler_stats))
+        return build(webpackConfig)
+          .then(stats => {
+            const message = `Built to ${chalk.gray(config.compiler_dist)}`
+            if (argv.verbose) {
+              log(stats.toString(config.compiler_stats))
+              log.success(message)
+            } else {
+              log.spinSucceed(message)
+            }
+          })
+          .catch(({ err, stats }) => {
+            // fatal error
+            if (err) throw err
 
-          if (config.compiler_fail_on_warning) {
-            process.exit(1)
-          }
-        }
+            // soft errors
+            if (stats.hasErrors()) {
+              log.error(stats.toString(config.compiler_stats))
+              throw new Error('Build had errors')
+            }
+
+            // warnings
+            if (stats.hasWarnings()) {
+              log.error(stats.toString(config.compiler_stats))
+
+              if (config.compiler_fail_on_warning) {
+                throw new Error('Unexpected build warnings')
+              }
+            }
+          })
       })
   },
 }

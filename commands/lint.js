@@ -1,12 +1,6 @@
-const debug = require('debug')('genesis:command:lint')
-
-const validators = require('../lib/validators')
-const { spawnPromise } = require('../lib/utils')
-const log = require('../lib/log')
-
 module.exports = {
   command: 'lint',
-  describe: 'Lint the project',
+  describe: 'lint the project',
 
   builder(yargs) {
     return yargs
@@ -17,32 +11,28 @@ module.exports = {
       })
   },
 
-  handler(argv) {
-    debug('Executing')
-    if (!process.env.NODE_ENV) {
-      log.info('Setting default NODE_ENV=production')
-      process.env.NODE_ENV = 'production'
-    }
+  execute(argv) {
+    const validators = require('../lib/validators')
+    const { spawnPromise } = require('../lib/utils')
+    const log = require('../lib/log')
 
-    if (!process.env.APP_ENV) {
-      log.info('Setting default APP_ENV=production')
-      process.env.APP_ENV = 'production'
-    }
+    return Promise.resolve()
+      .then(validators.projectStructure)
+      .then(() => {
+        let command = 'node_modules/.bin/eslint . --color'
+        if (argv.fix) command += ' --fix'
 
-    validators.validateProject()
-
-    let command = 'node_modules/.bin/eslint .'
-
-    if (argv.fix) {
-      command += ' --fix'
-    }
-
-    spawnPromise(command, { verbose: true })
+        log.spin('Linting')
+        return spawnPromise(command, { verbose: false })
+      })
       .then(res => {
-        log.success('There were no linter errors')
-        process.exit(res.exitCode)
-      }, err => {
-        process.exit(err.exitCode)
+        log.spinSucceed()
+      })
+      .catch(({ stdout, stderr }) => {
+        log.spinFail()
+        process.stderr.write(stdout)
+        process.stderr.write(stderr)
+        return Promise.reject()
       })
   },
 }

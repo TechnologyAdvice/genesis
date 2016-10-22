@@ -25,30 +25,33 @@ npm i --save @technologyadvice/genesis
 
 Use the CLI for sub command usage, example `gen help <command>`.
 
-```bash
-Usage: gen <command> [options]
+```
+Usage: cli.js <command> [options]
 
 Commands:
-  build           Build the app
-  lint            Lint the project
-  start           Start the dev server
-  test            Run tests
-  validate        Validate the project structure
-  help <command>  Display help
+  build       build the app
+  lint        lint the project
+  start       start the dev server
+  test        run tests
+  validate    validate the project structure
+  completion  generate bash completion script
 
 Options:
-  --version     Show version number                            [boolean]
-  -c, --config  Config file path          [default: "genesis.config.js"]
-  -h, --help    Show help                                      [boolean]
+  --help         Show help                                            [boolean]
+  -c, --config   Config file path                                      [string]
+  --env          Set app environment globals
+             [string] [choices: "development", "production", "staging", "test"]
+  --cwd          Change the current working directory            [default: "."]
+  -v, --version  Show version number                                  [boolean]
 ```
 
 ### Node API
 
 The CLI is the primary method of use.  The CLI uses the node API, see `/commands` for Node API usage examples.
 
-## Configuration
+## Configuration (optional)
 
-Configuration is optional.  To customize Genesis, create any valid config file:
+Create any valid config file.  The CLI will search up through directories to find a config file:
 
 - `genesis.config.js`
 - `genesis.js`
@@ -71,17 +74,35 @@ module.exports = {
 }
 ```
 
-## Globals
+## Environment 
 
-Genesis compiles your app with some global variables.  Their values are determined by how you set  `NODE_ENV` and `APP_ENV`. See `/lib/context.js` for more.
+Set either `--env` or `NODE_ENV`. Each defaults to the other if not set.  Each command has 
 
-```
-__DEV__
-__TEST__
-__STAGING__
-__PROD__
-process.env.NODE_ENV
-```
+### Globals
+
+Genesis makes the following globals available in your code.
+
+|Global                   | Description                                                   |
+|-------------------------|---------------------------------------------------------------|
+|`__ENV__`                | Set with `--env`.  Defaults to `NODE_ENV` else `development`. |
+|`__DEV__`                | `true` when `__ENV__ === 'development'`                       |
+|`__TEST__`               | `true` when `__ENV__ === 'test'`                              |
+|`__STAG__`               | `true` when `__ENV__ === 'production'`                        |
+|`__PROD__`               | `true` when `__ENV__ === 'production'`                        |
+|`process.env.NODE_ENV`   | Set with `NODE_ENV`.  Defaults to `--env`.                    |
+
+>Note, `process.env.NODE_ENV` is only defaulted as a global variable in your app.  Genesis never sets or changes actual environment variables.
+
+### Multiple Environments
+
+React uses `NODE_ENV` to flip features such as prop type warnings.  In our experience, you sometimes need to set `NODE_ENV` to one value only for React, but you require a different value for your app code.
+
+Genesis allows setting `--env` and `NODE_ENV` independently.  
+
+### `--env`
+
+Sets the _global_ `process.env.NODE_ENV` for use in your code.  It **does not** set the `NODE_ENV` environment variable.
+
 
 ## Releasing
 
