@@ -1,5 +1,5 @@
 # Genesis
-[![Circle CI](https://img.shields.io/circleci/project/TechnologyAdvice/genesis/master.svg?style=flat-square)](https://circleci.com/gh/TechnologyAdvice/genesis/tree/master)
+[![Circle CI](https://img.shields.io/circleci/token/d2c542e39fb07af41066fd3a63b9fe013bea7164/project/github/TechnologyAdvice/genesis/master.svg?style=flat-square)](https://circleci.com/gh/TechnologyAdvice/genesis/tree/master)
 [![Codecov](https://img.shields.io/codecov/c/github/TechnologyAdvice/genesis/master.svg?style=flat-square)](https://codecov.io/gh/TechnologyAdvice/genesis)
 
 ## Table of Contents
