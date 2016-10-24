@@ -19,7 +19,7 @@
   "author": "TechnologyAdvice <devteam@technologyadvice.com>",
   "license": "MIT",
   "dependencies": {
-    "babel-core": "^6.3.15",
+    "babel-core": "^6.18.0",
     "babel-loader": "^6.2.0",
     "babel-plugin-__coverage__": "^11.0.0",
     "babel-plugin-lodash": "^3.2.9",
