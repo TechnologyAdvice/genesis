@@ -1,62 +1,84 @@
-const fs = require('fs-promise')
-const debug = require('debug')('genesis:command:build')
-const { log } = require('../lib/utils')
-
 module.exports = {
   command: 'build',
-  describe: 'Build the app',
+  describe: 'build the app',
 
   builder(yargs) {
+    const configSchema = require('../lib/config-schema')
+
     return yargs
-      .option('verbose', {
+      .option('v', {
+        alias: 'verbose',
         default: false,
         describe: 'Output more information',
       })
-      .alias({
-        v: 'verbose',
+      .group(['s'], 'Compiler:')
+      .option('s', {
+        alias: 'sourcemaps',
+        default: configSchema.compiler_sourcemaps.default,
+        describe: configSchema.compiler_sourcemaps.describe,
+        type: configSchema.compiler_sourcemaps.type,
       })
   },
 
-  handler(argv) {
-    debug('Executing')
-    const { verbose } = argv
-    const { config } = require('../lib/context').get()
-    const validators = require('../lib/validators')
-    validators.validateProject()
-
-    log(`Removing ${config.compiler_dist}`)
-    fs.removeSync(config.compiler_dist)
-
-    log('Starting webpack...')
+  execute(argv) {
     const build = require('../bin/build')
-    const webpackConfig = require('../lib/webpack-config')
+    const chalk = require('chalk')
+    const getConfig = require('../lib/get-config')
+    const getWebpackConfig = require('../lib/get-webpack-config')
+    const fs = require('fs-promise')
+    const log = require('../lib/log')
+    const validators = require('../lib/validators')
 
-    build(webpackConfig)
-      .then(stats => {
-        log.success('Webpack finished')
-        if (verbose) {
-          log(stats.toString(config.compiler_stats))
+    return Promise.resolve()
+      .then(validators.projectStructure)
+      .then(() => {
+        const config = getConfig({ defaultEnv: 'production' })
+        const { __PROD__, __STAG__ } = config.compiler_globals
+
+        const webpackConfig = getWebpackConfig(config, {
+          hmr: false,
+          splitBundle: true,
+          minify: __PROD__ || __STAG__,
+        })
+
+        fs.removeSync(config.compiler_dist)
+
+        if (argv.verbose) {
+          log('Building...')
         } else {
-          log('Run with --verbose to see more output')
-        }
-      }, ({ err, stats }) => {
-        // fatal error
-        if (err) throw err
-
-        // soft errors
-        if (stats.hasErrors()) {
-          log.error(stats.toString(config.compiler_stats))
-          process.exit(1)
+          log.info('Run with --verbose to see more output')
+          log.spin('Building')
         }
 
-        // warnings
-        if (stats.hasWarnings()) {
-          log.error(stats.toString(config.compiler_stats))
+        return build(webpackConfig)
+          .then(stats => {
+            const message = `Built to ${chalk.gray(config.compiler_dist)}`
+            if (argv.verbose) {
+              log(stats.toString(config.compiler_stats))
+              log.success(message)
+            } else {
+              log.spinSucceed(message)
+            }
+          })
+          .catch(({ err, stats }) => {
+            // fatal error
+            if (err) throw err
 
-          if (config.compiler_fail_on_warning) {
-            process.exit(1)
-          }
-        }
+            // soft errors
+            if (stats.hasErrors()) {
+              log.error(stats.toString(config.compiler_stats))
+              throw new Error('Build had errors')
+            }
+
+            // warnings
+            if (stats.hasWarnings()) {
+              log.error(stats.toString(config.compiler_stats))
+
+              if (config.compiler_fail_on_warning) {
+                throw new Error('Unexpected build warnings')
+              }
+            }
+          })
       })
   },
 }

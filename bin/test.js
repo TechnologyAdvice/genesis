@@ -1,23 +1,15 @@
 const karma = require('karma')
 
-module.exports = function test(options) {
+/**
+ * Run tests with Karma.
+ * @param {object} karmaConfig - A valid Karma config object.
+ * @returns {Promise}
+ */
+module.exports = function test(karmaConfig) {
   return new Promise((resolve, reject) => {
-    if (!options.configFile) {
-      reject('You must define a configFile option.')
-      return
-    }
-
-    const server = new karma.Server(options, (exitCode) => {
-      const result = {
-        exitCode,
-        message: `Karma exited with code ${exitCode}`,
-      }
-
-      if (exitCode === 0) {
-        resolve(result)
-      } else {
-        reject(result)
-      }
+    const server = new karma.Server(karmaConfig, (code) => {
+      if (code === 0) resolve(code)
+      else reject(code)
     })
 
     server.start()

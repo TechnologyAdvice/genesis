@@ -7,5 +7,5 @@ exports.karma = {
 }
 
 exports.webpack = {
-  config: require('./lib/webpack-config'),
+  config: require('./lib/get-webpack-config'),
 }
