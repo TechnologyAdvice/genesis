@@ -18,4 +18,3 @@ chai.use(chaiAsPromised)
 chai.use(chaiEnzyme())
 chai.use(dirtyChai)
 chai.use(sinonChai)
-

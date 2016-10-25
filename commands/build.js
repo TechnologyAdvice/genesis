@@ -53,16 +53,6 @@ module.exports = {
         return build(webpackConfig)
           .then(stats => {
             const message = `Built to ${chalk.gray(config.compiler_dist)}`
-            if (argv.verbose) {
-              log(stats.toString(config.compiler_stats))
-              log.success(message)
-            } else {
-              log.spinSucceed(message)
-            }
-          })
-          .catch(({ err, stats }) => {
-            // fatal error
-            if (err) throw err
 
             // soft errors
             if (stats.hasErrors()) {
@@ -77,6 +67,14 @@ module.exports = {
               if (config.compiler_fail_on_warning) {
                 throw new Error('Unexpected build warnings')
               }
+            }
+
+            // success
+            if (argv.verbose) {
+              log(stats.toString(config.compiler_stats))
+              log.success(message)
+            } else {
+              log.spinSucceed(message)
             }
           })
       })

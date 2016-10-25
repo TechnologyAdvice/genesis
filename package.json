@@ -87,7 +87,8 @@
   },
   "devDependencies": {
     "greenkeeper-postpublish": "^1.0.1",
-    "ta-scripts": "^2.5.2"
+    "ta-scripts": "^2.5.2",
+    "webpack-validator": "^2.2.9"
   },
   "peerDependencies": {
     "react": ">=15",
