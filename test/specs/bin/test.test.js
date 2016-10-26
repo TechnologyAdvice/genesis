@@ -10,13 +10,7 @@ describe('bin/test.js', () => {
 
     return Promise.all(badTypes.map(type => {
       return test(type)
-        .should.be.rejectedWith(Error, `You must pass an options object, received \`${typeof type}\`.`)
+        .should.be.rejectedWith(Error, `You must pass a karmaConfig object, received \`${typeof type}\``)
     }))
   })
-
-  it('throws if options does not have a `configFile` key', () => {
-    return test({}).should.be.rejectedWith(Error, 'options.configFile must be a string.')
-  })
-
-  // TODO: test the success case, mock Karma?
 })

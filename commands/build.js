@@ -1,3 +1,5 @@
+const debug = require('debug')('genesis:commands:build')
+
 module.exports = {
   command: 'build',
   describe: 'build the app',
@@ -34,14 +36,11 @@ module.exports = {
       .then(() => {
         const config = getConfig({ defaultEnv: 'production' })
         const { __PROD__, __STAG__ } = config.compiler_globals
-
         const webpackConfig = getWebpackConfig(config, {
           hmr: false,
           splitBundle: true,
           minify: __PROD__ || __STAG__,
         })
-
-        fs.removeSync(config.compiler_dist)
 
         if (argv.verbose) {
           log('Building...')
@@ -50,18 +49,23 @@ module.exports = {
           log.spin('Building')
         }
 
+        debug(`Removing ${config.compiler_dist}`)
+        fs.removeSync(config.compiler_dist)
+
         return build(webpackConfig)
           .then(stats => {
-            const message = `Built to ${chalk.gray(config.compiler_dist)}`
+            const hasErrors = stats.hasErrors()
+            const hasWarnings = stats.hasWarnings()
+            debug(`Built with ${!hasErrors ? 'no' : ' '}errors and ${!hasWarnings ? 'no' : ' '}warnings`)
 
             // soft errors
-            if (stats.hasErrors()) {
+            if (hasErrors) {
               log.error(stats.toString(config.compiler_stats))
               throw new Error('Build had errors')
             }
 
             // warnings
-            if (stats.hasWarnings()) {
+            if (hasWarnings) {
               log.error(stats.toString(config.compiler_stats))
 
               if (config.compiler_fail_on_warning) {
@@ -70,6 +74,7 @@ module.exports = {
             }
 
             // success
+            const message = `Built to ${chalk.gray(config.compiler_dist)}`
             if (argv.verbose) {
               log(stats.toString(config.compiler_stats))
               log.success(message)

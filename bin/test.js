@@ -7,6 +7,10 @@ const karma = require('karma')
  */
 module.exports = function test(karmaConfig) {
   return new Promise((resolve, reject) => {
+    if ({}.toString.call(karmaConfig) !== '[object Object]') {
+      throw new Error(`You must pass a karmaConfig object, received \`${typeof karmaConfig}\``)
+    }
+
     const server = new karma.Server(karmaConfig, (code) => {
       if (code === 0) resolve(code)
       else reject(code)

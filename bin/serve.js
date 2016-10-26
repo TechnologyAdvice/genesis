@@ -49,13 +49,15 @@ module.exports = function start(webpackConfig, options) {
         .use(express.static(options.staticPath))
 
       let isListening = false
-      const listen = () => {
+      const listen = (stats) => {
         isListening = true
-        app.listen(options.port, options.host, resolve)
+        app.listen(options.port, options.host, () => {
+          resolve(stats)
+        })
       }
 
       webpackCompiler.plugin('done', (stats) => {
-        if (!isListening) listen()
+        if (!isListening) listen(stats)
       })
     } catch (err) {
       reject(err)
