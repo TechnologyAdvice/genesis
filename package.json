@@ -83,13 +83,13 @@
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.6.0",
-    "yargs": "^6.3.0"
+    "webpack-validator": "^2.2.9",
+    "yargs": "^6.3.0",
+    "eslint": "^3.8.1"
   },
   "devDependencies": {
-    "eslint": "^3.8.1",
     "greenkeeper-postpublish": "^1.0.1",
-    "ta-scripts": "^2.5.2",
-    "webpack-validator": "^2.2.9"
+    "ta-scripts": "^2.5.2"
   },
   "peerDependencies": {
     "react": ">=15",
