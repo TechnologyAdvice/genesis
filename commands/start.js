@@ -17,7 +17,7 @@ module.exports = {
         type: configSchema.server_port.type,
       })
       .option('h', {
-        alias: 'port',
+        alias: 'host',
         default: configSchema.server_host.default,
         describe: configSchema.server_host.describe,
         type: configSchema.server_host.type,
