@@ -7,11 +7,16 @@
     "node": "^6",
     "npm": "^3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TechnologyAdvice/genesis.git"
+  },
   "bin": {
     "gen": "./cli.js"
   },
   "scripts": {
-    "test": "echo \"There are no tests\"",
+    "test": "mocha",
+    "test:watch": "npm run test -- -w",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "release:major": "ta-script npm/release.sh major",
@@ -81,8 +86,10 @@
     "yargs": "^6.3.0"
   },
   "devDependencies": {
+    "eslint": "^3.8.1",
     "greenkeeper-postpublish": "^1.0.1",
-    "ta-scripts": "^2.5.2"
+    "ta-scripts": "^2.5.2",
+    "webpack-validator": "^2.2.9"
   },
   "peerDependencies": {
     "react": ">=15",

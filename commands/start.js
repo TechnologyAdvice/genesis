@@ -1,3 +1,5 @@
+const debug = require('debug')('genesis:commands:start')
+
 module.exports = {
   command: 'start',
   describe: 'start the dev server',
@@ -55,10 +57,38 @@ module.exports = {
           contentBase: paths.cwdSrc(),
           stats: config.compiler_stats,
           staticPath: paths.cwdAssets(),
+          // TODO add mechanism to extend config with argv.  config is the SSOT.
           port: config.server_port,
           host: config.server_host,
         })
-          .then(() => {
+          .then((stats) => {
+            const hasErrors = stats.hasErrors()
+            const hasWarnings = stats.hasWarnings()
+            debug(`Built with ${!hasErrors ? 'no' : ' '}errors and ${!hasWarnings ? 'no' : ' '}warnings`)
+
+            // soft errors (always log, ignore verbose)
+            if (hasErrors) {
+              log.error(stats.toString(config.compiler_stats))
+              throw new Error('Failed to start the app.  See build errors above.')
+            }
+
+            // warnings
+            if (hasWarnings) {
+              if (verbose) {
+                log.warn(stats.toString(config.compiler_stats))
+              } else {
+                log.warn('Built with warnings, use --verbose for more info.')
+              }
+
+              if (config.compiler_fail_on_warning) {
+                throw new Error('Unexpected build warnings')
+              }
+            }
+
+            // success
+            if (argv.verbose) {
+              log(stats.toString(config.compiler_stats))
+            }
             const location = `${config.server_protocol}://${config.server_host}:${config.server_port}`
             log.success(`The app is running at ${chalk.green(location)}`)
           })

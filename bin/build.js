@@ -11,12 +11,12 @@ module.exports = function build(webpackConfig) {
   return new Promise((resolve, reject) => {
     const compiler = webpack(webpackConfig)
 
+    const validators = require('../lib/validators')
+    validators.webpackConfig(webpackConfig)
+
     compiler.run((err, stats) => {
-      if (err || stats.hasErrors() || stats.hasWarnings()) {
-        reject({ err, stats })
-      } else {
-        resolve(stats)
-      }
+      if (err) throw err
+      resolve(stats)
     })
   })
 }
