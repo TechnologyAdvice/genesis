@@ -104,6 +104,58 @@ Genesis allows setting `--env` and `NODE_ENV` independently.
 Sets the _global_ `process.env.NODE_ENV` for use in your code.  It **does not** set the `NODE_ENV` environment variable.
 
 
+## Testing
+
+In your project, create `/test/specs`, add a test file, and run `gen test`.
+
+```js
+describe('genesis test harness', () => {
+  it('uses dirty-chai', () => {
+    expect(true).to.be.ok()
+  })
+  it('provides a global sinon sandbox and sinon-chai', () => {
+    const spy = sandbox.spy()
+    spy.should.not.have.been.called()
+    spy()
+    spy.should.have.been.calledOnce()
+  })
+  it('uses React, enzyme, chai, and chai-enzyme', () => {
+    shallow(<div>hello</div>)
+      .should.have.text('hello')
+
+    render(<div>hello</div>)
+      .should.have.text('hello')
+
+    mount(<div>hello</div>)
+      .should.have.text('hello')
+  })
+})
+```
+
+### Stack
+
+Genesis uses a modern test harness:
+
+- Webpack
+- Karma
+- Mocha
+- Sinon
+- Enzyme
+- Chai
+  - chai-as-promised
+  - chai-enzyme
+  - dirty-chai
+  - sinon-chai
+  
+### Globals
+
+You have the following globals available in tests:
+
+- Mocha: `it`, `describe`
+- Sinon: `sandbox`
+- Chai: `expect`, `should`
+- Enzyme: `shallow`, `render`, `mount`
+
 ## Releasing
 
 On the latest clean `master`:
