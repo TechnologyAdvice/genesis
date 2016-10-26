@@ -59,13 +59,14 @@ Create any valid config file.  The CLI will search up through directories to fin
 
 >You can also use `.json`, `.yml`, `.babel.js`, or any other extension supported by [js-interpret](https://github.com/js-cli/js-interpret).
 
-Your config should define an object with these keys.  See `/lib/default-config.js` for more info:
+Your config should define an object with these keys.  See `/lib/config-schema.js` for more info:
 
 ```js
 module.exports = {
   server_host: 'localhost',
   server_port: 3000,
 
+  compiler_env: 'development',
   compiler_alias: {},
   compiler_externals: {},
   compiler_globals: {},
@@ -84,12 +85,12 @@ Genesis makes the following globals available in your code.
 
 |Global                   | Description                                                   |
 |-------------------------|---------------------------------------------------------------|
-|`__ENV__`                | Set with `--env`.  Defaults to `NODE_ENV` else `development`. |
+|`__ENV__`                | Set with `--env`, defaults to `NODE_ENV` or command specific. |
 |`__DEV__`                | `true` when `__ENV__ === 'development'`                       |
 |`__TEST__`               | `true` when `__ENV__ === 'test'`                              |
 |`__STAG__`               | `true` when `__ENV__ === 'production'`                        |
 |`__PROD__`               | `true` when `__ENV__ === 'production'`                        |
-|`process.env.NODE_ENV`   | Set with `NODE_ENV`.  Defaults to `--env`.                    |
+|`process.env.NODE_ENV`   | Set with `NODE_ENV`, defaults to `__ENV__`.                   |
 
 >Note, `process.env.NODE_ENV` is only defaulted as a global variable in your app.  Genesis never sets or changes actual environment variables.
 

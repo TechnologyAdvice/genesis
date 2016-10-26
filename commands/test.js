@@ -25,7 +25,9 @@ module.exports = {
         // ----------------------------------------
         debug('Gathering project config')
         const getConfig = require('../lib/get-config')
-        const config = getConfig({ defaultEnv: 'test' })
+        const config = getConfig(argv.config, {
+          compiler_env: argv.env || 'test',
+        })
 
         // ----------------------------------------
         // Webpack config

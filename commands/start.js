@@ -8,6 +8,7 @@ module.exports = {
     const configSchema = require('../lib/config-schema')
 
     return yargs
+      .default('env', 'development')
       .group(['h', 'p'], 'Server:')
       .option('p', {
         alias: 'port',
@@ -16,7 +17,7 @@ module.exports = {
         type: configSchema.server_port.type,
       })
       .option('h', {
-        alias: 'port',
+        alias: 'host',
         default: configSchema.server_host.default,
         describe: configSchema.server_host.describe,
         type: configSchema.server_host.type,
@@ -42,7 +43,12 @@ module.exports = {
     return Promise.resolve()
       .then(validators.projectStructure)
       .then(() => {
-        const config = getConfig({ defaultEnv: 'development' })
+        const config = getConfig(argv.config, {
+          compiler_env: argv.env,
+          server_port: argv.port,
+          server_host: argv.host,
+        })
+
         const webpackConfig = getWebpackConfig(config, {
           hmr: true,
           minify: false,
@@ -57,7 +63,6 @@ module.exports = {
           contentBase: paths.cwdSrc(),
           stats: config.compiler_stats,
           staticPath: paths.cwdAssets(),
-          // TODO add mechanism to extend config with argv.  config is the SSOT.
           port: config.server_port,
           host: config.server_host,
         })

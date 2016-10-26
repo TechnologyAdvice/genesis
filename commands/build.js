@@ -8,6 +8,7 @@ module.exports = {
     const configSchema = require('../lib/config-schema')
 
     return yargs
+      .default('env', 'production')
       .option('v', {
         alias: 'verbose',
         default: false,
@@ -34,7 +35,10 @@ module.exports = {
     return Promise.resolve()
       .then(validators.projectStructure)
       .then(() => {
-        const config = getConfig({ defaultEnv: 'production' })
+        const config = getConfig(argv.config, {
+          compiler_env: argv.env,
+          compiler_sourcemaps: argv.sourcemaps,
+        })
         const { __PROD__, __STAG__ } = config.compiler_globals
         const webpackConfig = getWebpackConfig(config, {
           hmr: false,
