@@ -80,7 +80,7 @@
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.0",
     "v8flags": "^2.0.11",
-    "webpack": "^1.12.14",
+    "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.6.0",
     "webpack-validator": "^2.2.9",
