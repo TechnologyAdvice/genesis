@@ -12,13 +12,11 @@ module.exports = {
       .group(['h', 'p'], 'Server:')
       .option('p', {
         alias: 'port',
-        default: configSchema.server_port.default,
         describe: configSchema.server_port.describe,
         type: configSchema.server_port.type,
       })
       .option('h', {
         alias: 'host',
-        default: configSchema.server_host.default,
         describe: configSchema.server_host.describe,
         type: configSchema.server_host.type,
       })

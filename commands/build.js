@@ -17,7 +17,6 @@ module.exports = {
       .group(['s'], 'Compiler:')
       .option('s', {
         alias: 'sourcemaps',
-        default: configSchema.compiler_sourcemaps.default,
         describe: configSchema.compiler_sourcemaps.describe,
         type: configSchema.compiler_sourcemaps.type,
       })
