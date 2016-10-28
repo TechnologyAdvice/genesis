@@ -12,7 +12,7 @@ const log = require('./lib/log')
 // Parse Args
 // ==================================================
 debug('Parsing args')
-const argv = yargs
+let argv = yargs
   .commandDir('commands')
   .completion()
   .demand(1, 'You must specify a command')
@@ -170,12 +170,13 @@ const invoke = function invoke(env) {
     _.filter(_.isString),
     _.uniq
   )(env.configFiles)
+  debug('Found config files:', configFilePaths)
 
   // Add final config to argv.
-  // Use configName file or first configFiles path found.
+  // Use default configName file or first configFiles path found.
   const config = env.configPath || _.first(configFilePaths)
-  yargs.parse(process.argv, { config })
-  debug('argv:', JSON.stringify(yargs.argv, null, 2))
+  argv = yargs.parse(process.argv.slice(2), { config })
+  debug('Updated argv with first config file:', JSON.stringify(argv, null, 2))
 
   // ----------------------------------------
   // Execute Command
