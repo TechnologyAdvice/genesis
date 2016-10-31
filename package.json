@@ -89,6 +89,9 @@
   },
   "devDependencies": {
     "greenkeeper-postpublish": "^1.0.1",
+    "react": "^15.3.2",
+    "react-addons-test-utils": "^15.3.2",
+    "react-dom": "^15.3.2",
     "ta-scripts": "^2.5.2"
   },
   "peerDependencies": {
