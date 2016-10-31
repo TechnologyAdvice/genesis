@@ -107,6 +107,8 @@ Sets the _global_ `process.env.NODE_ENV` for use in your code.  It **does not** 
 
 ## Testing
 
+### Specs
+
 In your project, create `/test/specs`, add a test file, and run `gen test`.
 
 ```js
@@ -132,6 +134,24 @@ describe('genesis test harness', () => {
   })
 })
 ```
+
+### Mocks
+
+Any module added to `/test/mocks` will replace real modules of the same name during tests.  Let's mock a fictitious `src/lib/ajax-module.js` during tests:
+
+```
+/test/mocks/ajax-module.js
+```
+
+Now, `gen test` will resolve all `import ajaxModule from 'ajax-module'` statements to the mock module instead of the real one.
+  
+Mocking a 3rd party library works the same.  If we want to mock `axios` during tests:
+
+```
+/test/mocks/axios.js
+```
+
+Now, all `import axios from 'axios'` statements will resolve to our mocked axios module instead of the one in `node_modules`.
 
 ### Stack
 
