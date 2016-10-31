@@ -35,6 +35,7 @@ module.exports = {
         debug('Gathering webpack config')
         const getWebpackConfig = require('../lib/get-webpack-config')
         const webpackConfig = getWebpackConfig(config, {
+          coverage: true,
           hmr: false,
           minify: false,
           splitBundle: false,

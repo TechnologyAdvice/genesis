@@ -48,6 +48,7 @@ module.exports = {
         })
 
         const webpackConfig = getWebpackConfig(config, {
+          coverage: false,
           hmr: true,
           minify: false,
           splitBundle: true,

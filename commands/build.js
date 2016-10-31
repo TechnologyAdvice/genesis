@@ -40,6 +40,7 @@ module.exports = {
         })
         const { __PROD__, __STAG__ } = config.compiler_globals
         const webpackConfig = getWebpackConfig(config, {
+          coverage: false,
           hmr: false,
           splitBundle: true,
           minify: __PROD__ || __STAG__,
