@@ -51,6 +51,7 @@ module.exports = {
           coverage: false,
           hmr: true,
           minify: false,
+          mocks: false,
           splitBundle: true,
         })
 

@@ -42,8 +42,9 @@ module.exports = {
         const webpackConfig = getWebpackConfig(config, {
           coverage: false,
           hmr: false,
-          splitBundle: true,
           minify: __PROD__ || __STAG__,
+          mocks: false,
+          splitBundle: true,
         })
 
         if (argv.verbose) {
