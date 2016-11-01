@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { handleError } = require('./lib/utils')
+const chalk = require('chalk')
 const debug = require('debug')('genesis:cli')
 const { extensions } = require('interpret')
 const Liftoff = require('liftoff')
@@ -149,7 +150,7 @@ const invoke = function invoke(env) {
   // ----------------------------------------
   if (process.cwd() !== env.cwd) {
     process.chdir(env.cwd)
-    log.info('Working directory changed to', env.cwd)
+    log.info('Working directory changed to', chalk.blue(env.cwd))
   }
 
   // ----------------------------------------

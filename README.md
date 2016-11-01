@@ -137,21 +137,24 @@ describe('genesis test harness', () => {
 
 ### Mocks
 
-Any module added to `/test/mocks` will replace real modules of the same name during tests.  Let's mock a fictitious `src/lib/ajax-module.js` during tests:
-
-```
-/test/mocks/ajax-module.js
-```
-
-Now, `gen test` will resolve all `import ajaxModule from 'ajax-module'` statements to the mock module instead of the real one.
-  
-Mocking a 3rd party library works the same.  If we want to mock `axios` during tests:
+Any module added to `/test/mocks` will replace real modules of the same name during tests.  If we want to mock `axios` during tests:
 
 ```
 /test/mocks/axios.js
 ```
 
 Now, all `import axios from 'axios'` statements will resolve to our mocked axios module instead of the one in `node_modules`.
+
+#### Scoped Modules
+
+Mock scoped modules by replicating NPM's scoped directory:  If we want to mock `@my-scope/my-module` during tests:
+
+```
+/test/mocks/@my-scope/my-module.js
+```
+
+Now, all `import myModule from '@my-scope/my-module'` statements will resolve to our mocked module instead of the one in `node_modules`.
+
 
 ### Stack
 
