@@ -107,6 +107,10 @@ Sets the _global_ `process.env.NODE_ENV` for use in your code.  It **does not** 
 
 ## Testing
 
+### Polyfills
+
+The test environment includes the [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/).
+
 ### Specs
 
 In your project, create `/test/specs`, add a test file, and run `gen test`.
