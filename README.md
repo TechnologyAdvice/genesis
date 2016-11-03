@@ -77,7 +77,7 @@ module.exports = {
 
 ## Environment 
 
-Set either `--env` or `NODE_ENV`. Each defaults to the other if not set.  Each command has 
+Set either `--env` or `NODE_ENV`. Each defaults to the other if not set. 
 
 ### Globals
 
