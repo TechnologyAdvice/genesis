@@ -8,6 +8,7 @@
  * @param {number} options.port - The server port
  * @param {string} options.host - The server host
  * @param {boolean} [options.verbose] - Shows the webpack stats output
+ * @param {boolean} [options.compilerDone] - Webpack compiler "done" event callback
  * @returns {Promise}
  */
 module.exports = function start(webpackConfig, options) {
@@ -32,32 +33,29 @@ module.exports = function start(webpackConfig, options) {
       const webpackCompiler = webpack(webpackConfig)
       const app = express()
 
+      const webpackDevMiddleware = WebpackDevMiddleware(webpackCompiler, {
+        contentBase: options.contentBase,
+        debug: verbose,
+        hot: true,
+        lazy: false,
+        noInfo: !verbose,
+        progress: verbose,
+        publicPath: webpackConfig.output.publicPath,
+        stats: verbose ? options.stats : 'none',
+        quiet: !verbose,
+      })
       app
         .use(historyApiFallback({ verbose: false }))
-        .use(WebpackDevMiddleware(webpackCompiler, {
-          contentBase: options.contentBase,
-          debug: verbose,
-          hot: true,
-          lazy: false,
-          noInfo: !verbose,
-          progress: verbose,
-          publicPath: webpackConfig.output.publicPath,
-          stats: verbose && options.stats,
-          quiet: !verbose,
-        }))
+        .use(webpackDevMiddleware)
         .use(WebpackHotMiddleware(webpackCompiler))
         .use(express.static(options.staticPath))
 
-      let isListening = false
-      const listen = (stats) => {
-        isListening = true
-        app.listen(options.port, options.host, () => {
-          resolve(stats)
-        })
-      }
+      webpackCompiler.plugin('done', options.compilerDone)
 
-      webpackCompiler.plugin('done', (stats) => {
-        if (!isListening) listen(stats)
+      webpackDevMiddleware.waitUntilValid(() => {
+        app.listen(options.port, options.host, () => {
+          resolve()
+        })
       })
     } catch (err) {
       reject(err)
