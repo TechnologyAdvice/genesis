@@ -1,5 +1,3 @@
-const debug = require('debug')('genesis:commands:start')
-
 module.exports = {
   command: 'start',
   describe: 'start the dev server',
