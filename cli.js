@@ -135,6 +135,14 @@ const invoke = function invoke(env) {
   // cli package.json             - require('./package')
 
   // ----------------------------------------
+  // Updates
+  // ----------------------------------------
+  const updateNotifier = require('update-notifier')
+  const pkg = require('./package.json')
+
+  updateNotifier({ pkg }).notify()
+
+  // ----------------------------------------
   // Pre Validations
   // ----------------------------------------
   const validators = require('./lib/validators')
