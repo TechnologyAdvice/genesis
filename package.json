@@ -1,6 +1,6 @@
 {
   "name": "@technologyadvice/genesis",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Standardized application scripts and boilerplate for Front End applications",
   "main": "index.js",
   "engines": {
