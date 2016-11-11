@@ -11,6 +11,11 @@ module.exports = {
         default: false,
         type: 'boolean',
       })
+      .option('debug', {
+        alias: 'd',
+        default: false,
+        type: 'boolean',
+      })
   },
 
   execute(argv) {
@@ -59,6 +64,10 @@ module.exports = {
           autoWatch: watch,
           singleRun: !watch,
         })
+
+        if (argv.debug) {
+          karmaConfig.logLevel = 'DEBUG'
+        }
 
         // ----------------------------------------
         // Run
