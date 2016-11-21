@@ -1,8 +1,6 @@
 {
   "extends": "ta/frontend/test",
   "globals": {
-    "__APP_ENTRY_SRC_PATH__": false,
-    "__CWD_SPECS_DIR__": false,
-    "__CWD_SRC_DIR__": false
+    "__CWD_SPECS_DIR__": false
   }
 }
