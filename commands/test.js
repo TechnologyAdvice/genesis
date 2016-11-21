@@ -59,7 +59,7 @@ module.exports = {
         // ----------------------------------------
         debug('Gathering karma config')
         const { watch } = argv
-        const getKarmaConfig = require('../lib/karma-config.js')
+        const getKarmaConfig = require('../lib/get-karma-config.js')
         const karmaConfig = Object.assign({}, getKarmaConfig(config, webpackConfig), {
           autoWatch: watch,
           singleRun: !watch,
