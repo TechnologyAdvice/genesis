@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const { handleError } = require('./lib/utils')
 const chalk = require('chalk')
 const debug = require('debug')('genesis:cli')
 const { extensions } = require('interpret')
@@ -7,7 +6,8 @@ const Liftoff = require('liftoff')
 const _ = require('lodash/fp')
 const v8flags = require('v8flags')
 const yargs = require('yargs')
-const log = require('./lib/log')
+const log = require('./core/utils/log')
+const { handleError } = require('./core/utils')
 
 // ==================================================
 // Parse Args
