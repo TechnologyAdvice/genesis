@@ -2,7 +2,8 @@ const chalk = require('chalk')
 const childProcess = require('child_process')
 const fs = require('fs-promise')
 const debug = require('debug')('genesis:utils')
-const log = require('./log')
+const log = exports.log = require('./log')
+const paths = exports.paths = require('./paths')
 
 // ============================================================
 // Handle Errors
@@ -29,7 +30,6 @@ exports.handleError = (err) => {
 // Path Exists
 // ============================================================
 exports.pathExists = function pathExists(path) {
-  debug(`Checking if path exists ${path}`)
   try {
     fs.accessSync(path)
     return true
@@ -70,3 +70,4 @@ exports.spawnPromise = function spawnPromise(commandString, options = { verbose:
     })
   })
 }
+
