@@ -1,7 +1,7 @@
 /**
  * File system path helpers
  */
-const debug = require('debug')('genesis:paths')
+const debug = require('debug')('genesis:utils:paths')
 const path = require('path')
 const { argv } = require('yargs')
 
