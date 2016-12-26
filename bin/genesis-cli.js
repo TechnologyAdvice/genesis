@@ -6,6 +6,7 @@ const Liftoff = require('liftoff')
 const v8flags = require('v8flags')
 const yargs = require('yargs')
 const _ = require('lodash/fp')
+const path = require('path')
 const log = require('../utils/log')
 
 const handleFatalError = (err) => {
@@ -31,7 +32,7 @@ const handleFatalError = (err) => {
 // ==================================================
 debug('Parsing args')
 let argv = yargs
-  .commandDir('commands')
+  .commandDir(path.resolve(__dirname, '../commands'))
   .completion()
   .demand(1, 'You must specify a command')
   .fail((msg, err) => handleFatalError(err || msg))
@@ -182,10 +183,9 @@ const invoke = (env) => Promise.resolve()
     //   }
     //
     // => [ '/Users/bob/.genesisrc', '/Users/bob/projects/chat/genesis.js' ]
-
     let configFilePath
     if (env.configPath) {
-      configFilePath = require(env.configPath)
+      configFilePath = env.configPath
     } else {
       const availableConfigFiles = _.flow(
         _.values,
@@ -213,10 +213,8 @@ const invoke = (env) => Promise.resolve()
     // ----------------------------------------
     const commandName = argv._
 
-    debug(`Loading command: ${commandName}`)
+    debug(`Executing command: ${commandName}.`)
     if (!argv.verbose) log.info('Run with --verbose to see more output')
-
-    debug(`Executing command: ${commandName}(${JSON.stringify(argv, null, 2).replace(/\n/g, '\n  ')})`)
     return require(`../commands/${commandName}`).execute(config, argv)
   })
   .catch(handleFatalError)

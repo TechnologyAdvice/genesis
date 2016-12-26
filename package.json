@@ -16,7 +16,7 @@
     "url": "https://github.com/TechnologyAdvice/genesis.git"
   },
   "bin": {
-    "gen": "./cli.js"
+    "gen": "./bin/genesis-cli.js"
   },
   "scripts": {
     "test": "mocha",
