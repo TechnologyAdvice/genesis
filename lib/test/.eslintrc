@@ -1,6 +1,0 @@
-{
-  "extends": "ta/frontend/test",
-  "globals": {
-    "__CWD_SPECS_DIR__": false
-  }
-}

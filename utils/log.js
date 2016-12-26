@@ -66,13 +66,29 @@ log.spin = (...msgs) => {
 }
 log.spinSucceed = (...msgs) => {
   log.spinStopAndClear()
-  const args = (_.isEmpty(msgs) ? spinMessages : msgs)
+  const args = _.isEmpty(msgs) ? spinMessages : msgs
   log.success(...args)
 }
 log.spinFail = (...msgs) => {
   log.spinStopAndClear()
-  const args = (_.isEmpty(msgs) ? spinMessages : msgs)
+  const args = _.isEmpty(msgs) ? spinMessages : msgs
   log.error(...args)
+}
+
+log.webpackStats = (stats, config) => {
+  const hasErrors = stats.hasErrors()
+  const hasWarnings = stats.hasWarnings()
+
+  if (hasErrors) {
+    log.error('App failed to build due to errors:')
+    log.error(stats.toString('errors-only'))
+  } else if (hasWarnings) {
+    log.warn('App built but had warnings:')
+    log.warn(stats.toString('errors-only'))
+  } else {
+    if (config.verbose) log(stats.toString(config.compiler_stats))
+    log.success('App built successfully')
+  }
 }
 
 module.exports = log

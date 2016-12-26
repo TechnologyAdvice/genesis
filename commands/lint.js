@@ -1,6 +1,6 @@
 module.exports = {
   command: 'lint',
-  describe: 'lint the project',
+  describe: 'lint the project for code errors',
 
   builder(yargs) {
     return yargs
@@ -11,13 +11,11 @@ module.exports = {
       })
   },
 
-  execute(argv) {
-    const validators = require('../lib/validators')
-    const { spawnPromise } = require('../lib/utils')
-    const log = require('../lib/log')
+  execute(config, argv) {
+    const spawnPromise = require('../utils/spawn-promise')
+    const log = require('../utils/log')
 
     return Promise.resolve()
-      .then(validators.projectStructure)
       .then(() => {
         let command = 'node_modules/.bin/eslint . --color'
         if (argv.fix) command += ' --fix'
@@ -25,14 +23,12 @@ module.exports = {
         log.spin('Linting')
         return spawnPromise(command, { verbose: false })
       })
-      .then(res => {
-        log.spinSucceed()
-      })
+      .then(log.spinSucceed)
       .catch(({ stdout, stderr }) => {
         log.spinFail()
         process.stderr.write(stdout)
         process.stderr.write(stderr)
-        return Promise.reject()
+        throw new Error('There was an error while running the [lint] task.')
       })
   },
 }
