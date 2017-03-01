@@ -88,7 +88,7 @@ Genesis makes the following globals available in your code.
 |`__ENV__`                | Set with `--env`, defaults to `NODE_ENV` or command specific. |
 |`__DEV__`                | `true` when `__ENV__ === 'development'`                       |
 |`__TEST__`               | `true` when `__ENV__ === 'test'`                              |
-|`__STAG__`               | `true` when `__ENV__ === 'production'`                        |
+|`__STAG__`               | `true` when `__ENV__ === 'staging'`                        |
 |`__PROD__`               | `true` when `__ENV__ === 'production'`                        |
 |`process.env.NODE_ENV`   | Set with `NODE_ENV`, defaults to `__ENV__`.                   |
 
