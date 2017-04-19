@@ -24,12 +24,3 @@ install:
 script:
   - npm run lint
   - npm test
-
-deploy:
-  - provider: script
-    skip_cleanup: true
-    script: |
-      git config --global user.email "devteam+deweybot@technologyadvice.com"
-      git config --global user.name "deweybot"
-    on:
-      branch: master
